@@ -11,3 +11,6 @@ Tar emot:
   "email":"exempel@mail.com"
   "code":"123456"
 }
+
+VerificationCleaner 
+kollar om det ligger requests i databasen där giltighetstiden har gått ut och rensar bort dem varje minut. 
