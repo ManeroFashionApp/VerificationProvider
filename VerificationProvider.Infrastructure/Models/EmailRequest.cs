@@ -1,6 +1,6 @@
 ﻿
 
-namespace VerificationProvider.Models;
+namespace VerificationProvider.Infrastructure.Models;
 
 public class EmailRequest
 {

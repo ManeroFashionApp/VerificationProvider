@@ -3,24 +3,64 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Data.Contexts;
-using VerificationProvider.Models;
+using VerificationProvider.Infrastructure.Models;
 using static System.Net.Mime.MediaTypeNames;
+using VerificationProvider.Data.Contexts;
+using Microsoft.EntityFrameworkCore.Internal;
 
 
-namespace VerificationProvider.Services
+namespace VerificationProvider.Infrastructure.Services
 {
     public class VerificationService : IVerificationService
     {
         private readonly ILogger<VerificationService> _logger;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly DataContext _context;
 
-        public VerificationService(ILogger<VerificationService> logger, IServiceProvider serviceProvider)
+        public VerificationService(DataContext context, ILogger<VerificationService> logger)
         {
             _logger = logger;
-            _serviceProvider = serviceProvider;
+            _context = context;
+
         }
 
+        public async Task<ResponseResult<bool>> SaveVerificationRequest(VerificationRequest verificationRequest, string code)
+        {
+            var response = new ResponseResult<bool>();
+            try
+            {
+
+                
+
+                _logger.LogInformation("Starting SaveVerificationRequest method.");
+                var existingRequest = await _context.IncomingRequests.FirstOrDefaultAsync(x => x.Email == verificationRequest.Email);
+                if (existingRequest != null)
+                {
+                    _logger.LogInformation("Existing request found. Updating code and expiry date.");
+                    existingRequest.Code = code;
+                    existingRequest.ExpiryDate = DateTime.Now.AddMinutes(5);
+                    _context.Entry(existingRequest).State = EntityState.Modified;
+                }
+                else
+                {
+                    _logger.LogInformation("No existing request found. Adding new request.");
+                    _context.IncomingRequests.Add(new Data.Entities.IncomingRequestEntity() { Email = verificationRequest.Email, Code = code });
+                }
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("SaveChangesAsync called successfully.");
+                response.IsSuccess = true;
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: GenerateVerificationCode.SaveVerificationRequest() :: {ex.Message}");
+                response.IsSuccess = false;
+                response.Error = ex.Message;
+                response.Result = false;
+            }
+
+            return response;
+        }
 
         public VerificationRequest UnpackVerificationRequest(ServiceBusReceivedMessage message)
         {
@@ -57,34 +97,7 @@ namespace VerificationProvider.Services
             return null!;
         }
 
-        public async Task<bool> SaveVerificationRequest(VerificationRequest verificationRequest, string code)
-        {
-            try
-            {
-                using var context = _serviceProvider.GetRequiredService<DataContext>();
-                var existingRequest = await context.IncomingRequests.FirstOrDefaultAsync(x => x.Email == verificationRequest.Email);
-                if (existingRequest != null)
-                {
-                    existingRequest.Code = code;
-                    existingRequest.ExpiryDate = DateTime.Now.AddMinutes(5);
-                    context.Entry(existingRequest).State = EntityState.Modified;
-                }
-                else
-                {
-                    context.IncomingRequests.Add(new Data.Entities.IncomingRequestEntity() { Email = verificationRequest.Email, Code = code });
-                }
 
-                await context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error: GenerateVerificationCode.SaveVerificationRequest() :: {ex.Message}");
-
-            }
-
-            return false;
-        }
 
         public EmailRequest GenerateEmailRequest(VerificationRequest verificationRequest, string code)
         {

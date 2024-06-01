@@ -1,5 +1,5 @@
 ﻿
-namespace VerificationProvider.Services
+namespace VerificationProvider.Infrastructure.Services
 {
     public interface IVerificationCleanerService
     {

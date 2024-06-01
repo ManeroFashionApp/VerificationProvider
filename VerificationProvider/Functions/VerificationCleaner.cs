@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using VerificationProvider.Services;
+using VerificationProvider.Infrastructure.Services;
+
 
 namespace VerificationProvider.Functions;
 
