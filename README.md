@@ -1,5 +1,5 @@
 # VerificationProvider
-GeneerateAndSendVerificationCode triggas av service bus. 
+GenerateAndSendVerificationCode triggas av service bus. 
 Skicka in en json som ser ut såhär i service busen.
 {
   "email":"exempel@mail.com"
