@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VerificationProvider.Models
+namespace VerificationProvider.Infrastructure.Models
 {
-    public class VerificationRequest
+    public class ValidateCodeRequest
     {
         public string Email { get; set; } = null!;
+        public string Code { get; set; } = null!;
     }
 }

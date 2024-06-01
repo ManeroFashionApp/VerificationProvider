@@ -1,12 +1,13 @@
-﻿using Data.Contexts;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using VerificationProvider.Models;
+using VerificationProvider.Data.Contexts;
+using VerificationProvider.Infrastructure.Models;
 
 
-namespace VerificationProvider.Services;
+
+namespace VerificationProvider.Infrastructure.Services;
 
 public class ValidateCodeService : IValidateCodeService
 {
@@ -22,7 +23,7 @@ public class ValidateCodeService : IValidateCodeService
     {
         try
         {
-            var body = await new StreamReader(req.Body).ReadToEndAsync(); // här fick jag fel
+            var body = await new StreamReader(req.Body).ReadToEndAsync(); 
             if (!string.IsNullOrEmpty(body))
             {
                 var validateRequest = JsonConvert.DeserializeObject<ValidateCodeRequest>(body);

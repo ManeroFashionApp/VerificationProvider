@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using VerificationProvider.Models;
+using VerificationProvider.Infrastructure.Models;
 
-namespace VerificationProvider.Services
+
+namespace VerificationProvider.Infrastructure.Services
 {
     public interface IValidateCodeService
     {

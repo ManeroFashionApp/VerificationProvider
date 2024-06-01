@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Data.Entities;
+namespace VerificationProvider.Data.Entities;
 
 public class IncomingRequestEntity
 {

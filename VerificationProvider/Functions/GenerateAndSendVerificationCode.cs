@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using VerificationProvider.Services;
+using VerificationProvider.Infrastructure.Services;
+
 
 namespace VerificationProvider.Functions
 {
@@ -34,7 +35,7 @@ namespace VerificationProvider.Functions
                     if (!string.IsNullOrEmpty(code))
                     {
                         var result = await _verificationService.SaveVerificationRequest(verificationRequest, code);
-                        if (result)
+                        if (result.Result)
                         {
                             var emailRequest = _verificationService.GenerateEmailRequest(verificationRequest, code);
                             if (emailRequest != null)

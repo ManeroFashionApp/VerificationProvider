@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Data.Contexts;
+namespace VerificationProvider.Data.Contexts;
 
-public class DataContextFactory: IDesignTimeDbContextFactory<DataContext>
+public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
     public DataContext CreateDbContext(string[] args)
     {

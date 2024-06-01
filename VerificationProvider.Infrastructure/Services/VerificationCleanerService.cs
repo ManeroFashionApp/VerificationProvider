@@ -1,9 +1,9 @@
-﻿using Data.Contexts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using VerificationProvider.Data.Contexts;
 
 
-namespace VerificationProvider.Services;
+namespace VerificationProvider.Infrastructure.Services;
 
 public class VerificationCleanerService : IVerificationCleanerService
 {

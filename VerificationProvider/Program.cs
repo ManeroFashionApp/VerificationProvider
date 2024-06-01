@@ -1,9 +1,9 @@
-using Data.Contexts;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using VerificationProvider.Services;
+using VerificationProvider.Data.Contexts;
+using VerificationProvider.Infrastructure.Services;
 
 
 
